@@ -1,20 +1,22 @@
 # Jev Oscillator Playground
 
-A tiny static experiment: describe a sound, ask Jev for 32 independent 4-bit amplitude decisions, assemble them into a wavetable, and play it with Web Audio.
+Local 32 x 4-bit wavetable experiment driven by Jev.
 
 ## Run
 
-Open `index.html`, or publish the repository with GitHub Pages. Enter your own TypeSafe API key in the page. The key is stored only in your browser's localStorage and is never committed to this repository.
+Requires Node.js 18+.
 
-The app sends one request to `POST https://api.typesafe.ai/v1/systemone` using `jev-latest`, with 32 Choice questions sharing the same state. Each Choice has the values 0–15.
+```sh
+export TYPESAFE_API_KEY="your-key"
+npm start
+```
 
-## Notes
+Then open `http://localhost:3000`.
 
-- 32 samples × 4-bit
-- waveform can also be drawn/edited manually
-- audio generation is entirely local
-- the TypeSafe API is called only on **Generate with Jev**
-- this is an experiment, not a production credential architecture; browser-side API keys are visible to the user who owns the browser
-- if TypeSafe's direct endpoint does not permit browser CORS, a tiny proxy will be required
+The browser talks only to the local Node server. The server sends the Jev request to TypeSafe, so there is no browser CORS problem and the API key never enters the page.
 
-No build step and no dependencies.
+No npm dependencies are required.
+
+## What it does
+
+Jev receives 32 Choice questions in one System One request. Each question selects an amplitude from 0 through 15. The 32 answers become a 32 x 4-bit wavetable. The browser can draw/edit the table and play it locally with Web Audio.
